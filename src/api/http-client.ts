@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 const options = {
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: 'https://api.giphy.com/v1/gifs',
   headers: {
     Accept: "application/json",
     "Content-Type": "multipart/form-data",
