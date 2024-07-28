@@ -7,7 +7,6 @@ import path from 'path'
 export default defineConfig({
   plugins: [
     vue(), 
-   
     VitePWA({
     registerType: 'autoUpdate',
     injectRegister: false,
@@ -37,6 +36,8 @@ export default defineConfig({
       type: 'module',
     },
   })],
+  base: '/giphy-app/',
+
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src')
