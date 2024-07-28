@@ -34,9 +34,9 @@ jobs:
 
       - name: Deploy to GitHub Pages
         run: |
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git remote set-url origin https://x-access-token:${{ secrets.ACTIONS_DEPLOY_KEY }}@github.com/${{ github.repository }}.git
           npm run deploy
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           VITE_GIPHY_API_KEY: ${{ secrets.VITE_GIPHY_API_KEY }}
           VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
