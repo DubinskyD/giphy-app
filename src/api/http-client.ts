@@ -1,39 +1,45 @@
-import Axios from "axios";
+// http-client.ts
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const options = {
-  baseURL: 'https://api.giphy.com/v1/gifs',
+  baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
     Accept: "application/json",
     "Content-Type": "multipart/form-data",
   },
 };
-const httpClient = Axios.create(options);
 
-//interceptors.request
+const httpClient = axios.create(options);
+
+// interceptors.request
 httpClient.interceptors.request.use((config) => {
-  config.params.api_key = import.meta.env.VITE_GIPHY_API_KEY;
+  if (config.params) {
+    config.params.api_key = import.meta.env.VITE_GIPHY_API_KEY;
+  } else {
+    config.params = { api_key: import.meta.env.VITE_GIPHY_API_KEY };
+  }
   return config;
 });
 
-const ApiClient = {
-  get(url: string, params = {}) {
-    return httpClient.get(url, { params });
-  },
+interface IApiClient {
+  get<T = any>(url: string, params?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+}
 
-  put(url: string, data = {}, params = {}) {
-    return httpClient.put(url, data, { params });
+const ApiClient: IApiClient = {
+  get<T>(url: string, params?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return httpClient.get<T>(url, { params, ...config });
   },
-
-  delete(url: string, params = {}) {
-    return httpClient.delete(url, { params });
+  post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return httpClient.post<T>(url, data, config);
   },
-
-  post(url: string, data = {}, params = {}) {
-    return httpClient.post(url, data, { params });
+  patch<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return httpClient.patch<T>(url, data, config);
   },
-
-  patch(url: string, data = {}, params = {}) {
-    return httpClient.patch(url, data, { params });
+  delete<T>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return httpClient.delete<T>(url, config);
   },
 };
 
